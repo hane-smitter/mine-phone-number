@@ -61,7 +61,7 @@ const MNOPrefixes: IMNOPrefixes = {
 		{},
 		{ from: 730, to: 739 },
 		{ from: 750, to: 756 },
-		{ from: 785, to: 789 },
+		{ from: 780, to: 789 },
 		{ from: 100, to: 102 }
 	),
 	/**

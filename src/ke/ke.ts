@@ -1,12 +1,10 @@
-import {
-	parsePhoneNumberFromString,
-	PhoneNumber,
-} from "libphonenumber-js";
+import { parsePhoneNumberFromString, PhoneNumber } from "libphonenumber-js";
 import {
 	CountryCode,
 	IExtract,
 	IMNO,
 	IMNOPrefixes,
+	OperatorResponse,
 	PREFIXES
 } from "../types";
 import sift from "../utils/sifter";
@@ -22,11 +20,11 @@ type MobileNetworkOperators =
 	| "SEMA MOBILE"
 	| "EFERIO";
 
-const MNOS: IMNO[] = [
+const MNOS: IMNO<MobileNetworkOperators>[] = [
 	{ name: "SAFARICOM", acronyms: ["SAF"] },
 	{
-		name: "AIRTEL",
-		acronyms: ["AIRTEL KENYA", "ZAIN", "CELTEL", "BHARTI", "BHARTI AIRTEL"]
+		name: "AIRTEL KENYA",
+		acronyms: ["AIRTEL", "ZAIN", "CELTEL", "BHARTI", "BHARTI AIRTEL"]
 	},
 	{ name: "TELKOM KENYA", acronyms: ["TELKOM", "ORANGE", "TELEKOM"] },
 	{ name: "JAMII TELECOMMUNICATION", acronyms: ["JTL", "FAIBA", "FAIBA 4G"] },
@@ -95,7 +93,9 @@ const MNOPrefixes: IMNOPrefixes = {
 };
 
 //functions
-export function getNetworkOperator(num: string) {
+export function getNetworkOperator(
+	num: string
+): OperatorResponse | MobileNetworkOperators {
 	const parsedNumber: PhoneNumber | undefined = parsePhoneNumberFromString(
 		num,
 		countryCode
@@ -103,11 +103,11 @@ export function getNetworkOperator(num: string) {
 	const keNumber: string | undefined = parsedNumber?.number;
 	const isValidKENumber: RegExp = /^(\+?254|0)\d{9}$/;
 	if (!isValidKENumber.test(String(keNumber))) {
-		return "not valid ke number";
+		return "INVALID_NUMBER"; //INVALID_NUMBER
 	}
 	let prefix: string | null = null;
 	if (!keNumber) {
-		return "invalid Kenya number";
+		return "INVALID_NUMBER_INPUT"; //INVALID_NUMBER_INPUT
 	}
 	const capturePrefix = /(\+?254|0)(?<prefix>\d{3})(\d{6})/;
 	const extracted: RegExpMatchArray | null = keNumber.match(capturePrefix);
@@ -115,13 +115,13 @@ export function getNetworkOperator(num: string) {
 
 	let prefixNum: number = 0;
 	if (!prefix) {
-		return "prefix not extracted";
+		return "INVALID_NUMBER"; // INVALID_NUMBER
 	}
 	prefixNum = parseInt(prefix);
 
 	const prefixNumAvailable: boolean = AVAILABLEPREFIXES.includes(prefixNum);
 	if (!prefixNumAvailable) {
-		return "prefix unavailable in Kenya";
+		return "NOT_AVAILABLE_IN_REGION"; //NOT_AVAILABLE_IN_REGION
 	}
 	// console.log("MNOPrefixes   ::::", MNOPrefixes);
 	// console.log("sift machine", sift({ include: [747] }));
@@ -131,7 +131,7 @@ export function getNetworkOperator(num: string) {
 			return MNOS[i].name;
 		}
 	}
-	return "unknown";
+	return "UNKNOWN"; //UNKNOWN
 }
 export function isOperator(
 	num: string,
@@ -155,18 +155,20 @@ export function isOperator(
 	}
 
 	// get the mobile network operator
-	const foundOperator: IMNO | undefined = MNOS.find(mno => {
-		return (
-			mno.name === networkOperator || mno.acronyms.includes(networkOperator)
-		);
-	});
+	const foundOperator: IMNO<MobileNetworkOperators> | undefined = MNOS.find(
+		mno => {
+			return (
+				mno.name === networkOperator || mno.acronyms.includes(networkOperator)
+			);
+		}
+	);
 	if (foundOperator) {
 		const { name } = foundOperator;
 		return MNOPrefixes[name].includes(prefixNum);
 	}
 	return false;
 }
-export function isValidNumber(num: string): boolean {
+export function isValidNumberForRegion(num: string): boolean {
 	const parsedNumber: PhoneNumber | undefined = parsePhoneNumberFromString(
 		num,
 		countryCode
@@ -181,7 +183,7 @@ export function isValidNumber(num: string): boolean {
 const ke: IExtract<MobileNetworkOperators> = {
 	getNetworkOperator,
 	isOperator,
-	isValidNumber
+	isValidNumberForRegion
 };
 
 export { ke };

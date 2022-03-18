@@ -1,10 +1,16 @@
+export type OperatorResponse =
+	| "INVALID"
+	| "INVALID_NUMBER"
+	| "INVALID_NUMBER_INPUT"
+	| "NOT_AVAILABLE_IN_REGION"
+	| "UNKNOWN";
 export interface IExtract<T> {
 	/**
 	 * Get name of Mobile Network Operator
 	 * @param {string} num - Phone number in national or international format
 	 * @returns {string} - This is the name of the Mobile Network Operator
 	 */
-	getNetworkOperator(num: string): string;
+	getNetworkOperator(num: string): OperatorResponse | T;
 	/**
 	 * Match a phone number against a Mobile Network Operator specified
 	 * @param num - Phone number in national or international format
@@ -15,13 +21,13 @@ export interface IExtract<T> {
 	 * Check if phone number is valid in the configured country code
 	 * @param num - Phone number in national or international format
 	 */
-	isValidNumber(num: string): boolean;
+	 isValidNumberForRegion(num: string): boolean;
 }
 export type PREFIXES = number[];
 // export interface ISiftPrefixes {
 // 	(): number[];
 // }
-export type IMNO = { name: string; acronyms: string[] };
+export type IMNO<T> = { name: T; acronyms: string[] };
 export interface IMNOPrefixes {
 	[operator: string]: number[];
 }

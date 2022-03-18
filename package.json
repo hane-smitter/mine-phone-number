@@ -1,7 +1,7 @@
 {
   "name": "mine-phone-number",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.2",
+  "description": "Format phone number to mine useful pieces of information including mobile network operator",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [

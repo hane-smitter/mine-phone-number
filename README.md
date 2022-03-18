@@ -32,7 +32,7 @@
 <h3 align="center">Mine Phone Number</h3>
 
   <p align="center">
-    Mine Phone Number is a tool that helps you retrieve information about a phone number (phone number's calling code and mobile network operator). You can also validate a phone number with ***rules/conventions*** for a specific country, identified by 2 Digit ISO code.
+    Mine Phone Number is a tool that helps you retrieve information about a phone number (phone number's calling code and mobile network operator). You can also validate a phone number with `rules/conventions` for a specific country, identified by 2 Digit ISO code.
     <!-- <br />
     <a href="https://github.com/hane-smitter/mine-phone-number"><strong>Explore the docs »</strong></a> -->
     <br />
@@ -75,7 +75,7 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
 I started this project when i was experiencing difficulties building a web application that performed STK push to the intended Mobile Network Operator, native to the region the phone number belongs to. There are ultimate solutions out there, such as [Google's libphonenumber](https://www.npmjs.com/package/google-libphonenumber), which is good at parsing phone numbers, but is way too much of an overkill of some small feature you may want to integrate in your web application.
 

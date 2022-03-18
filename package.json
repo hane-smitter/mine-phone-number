@@ -9,10 +9,11 @@
   ],
   "scripts": {
     "dev": "tsc --watch",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\"",
     "build": "tsc",
     "lint": "eslint --ignore-path .eslintignore",
-    "format": "prettier --ignore-path .gitignore --write \"src/**/*.ts\" \"src/**/*.js\""
+    "format": "prettier --ignore-path .gitignore --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "prepublishOnly": "npm run test"
   },
   "keywords": [
     "phone number formatter",
@@ -38,6 +39,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hane-smitter"
+    "url": "https://github.com/hane-smitter/mine-phone-number"
   }
 }

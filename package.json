@@ -1,6 +1,6 @@
 {
   "name": "mine-phone-number",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Format phone number to mine useful pieces of information including mobile network operator",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,7 +13,7 @@
     "build": "tsc -P tsconfig.build.json",
     "lint": "eslint --ignore-path .eslintignore",
     "format": "prettier --ignore-path .gitignore --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "prepublishOnly": "npm run test"
+    "prepublishOnly": "npm run build && npm run test"
   },
   "keywords": [
     "phone number formatter",

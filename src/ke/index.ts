@@ -1,1 +1,1 @@
-export { getNetworkOperator, isOperator, isValidNumber } from "./ke";
+export { getNetworkOperator, isOperator, isValidNumberForRegion } from "./ke";

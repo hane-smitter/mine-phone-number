@@ -29,10 +29,10 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a> -->
 
-<h3 align="center">Mine Phone Number</h3>
+<h1 align="center"><strong>Mine Phone Number</strong></h1>
 
   <p align="center">
-    Mine Phone Number is a tool that helps you retrieve information about a phone number (phone number's calling code and mobile network operator). You can also validate a phone number with `rules/conventions` for a specific country, identified by 2 Digit ISO code.
+    Mine Phone Number is a tool that helps you retrieve information about a phone number (phone number's calling code and mobile network operator). You can also validate a phone number with <strong>rules/conventions</strong> for a specific country, identified by <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">2 Character ISO code</a>.
     <!-- <br />
     <a href="https://github.com/hane-smitter/mine-phone-number"><strong>Explore the docs »</strong></a> -->
     <br />
@@ -58,7 +58,7 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
+        <!-- <li><a href="#prerequisites">Prerequisites</a></li> -->
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
@@ -67,13 +67,13 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <!-- <li><a href="#acknowledgments">Acknowledgments</a></li> -->
   </ol>
 </details>
 
 <!-- ABOUT THE PROJECT -->
 
-## About The Project
+<h2 id="about-the-project">About The Project</h2>
 
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
@@ -81,54 +81,52 @@ I started this project when i was experiencing difficulties building a web appli
 
 Additionally, it does not go an inch deeper in trying to get the Mobile Network Operator of the associated phone number.
 
-The project currently supports **Kenya(KE)**
+The project currently supports **Kenya(KE)**. More support coming soon 🔥
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-### Built With
+<h3 id="built-with">Built With</h3>
 
 - [Typescript](https://www.typescriptlang.org/)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 
-## Getting Started
+<h2 id="getting-started">Getting Started</h2>
 
-### Prerequisites
+<!-- ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+This is an example of how to list things you need to use the software and how to install them. -->
+
+<h3 id="installation">💽 Installation</h3>
 
 - npm
   ```sh
   npm install mine-phone-number
   ```
 
-### Installation
-
-There is no further configuration to be done.
-
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 
-## Usage
+<h2 id="usage">🚴 Usage</h2>
 
 ```javascript
 const {
 	getNetworkOperator,
 	isOperator,
-	isValidNumber
+	isValidNumberForRegion
 } = require("mine-phone-number/dist/ke");
 // ---- or, alternative way of loading the library ----
 /* 
 const { KE } = require("mine-phone-number");
 
 --- use as ---
-const isAirtelSim = KE.isOperator("0739946646", "AIRTEL KENYA"); // outputs TRUE
+const isAirtelSim = KE.isOperator("0739444444", "AIRTEL KENYA"); // outputs TRUE
  */
-const isAirtelSim = isOperator("0739946646", "AIRTEL KENYA");
-const isValidNum = isValidNumberForRegion("076946646");
-const getOperator = getNetworkOperator("254-747-486646");
+const isAirtelSim = isOperator("0739444444", "AIRTEL KENYA");
+const isValidNum = isValidNumberForRegion("07691111111");
+const getOperator = getNetworkOperator("254-747-444444");
 
 console.log("isAirtelSim:: ", isAirtelSim); // outputs TRUE (boolean)
 console.log("retrieved operator:: ", getOperator); // outputs "JAMII TELECOMMUNICATION" (string)
@@ -139,7 +137,13 @@ console.log("isValidNum", isValidNum); // outputs FALSE (boolean)
 
 <!-- ROADMAP -->
 
-## Features
+<h2 id="features">✅ Features</h2>
+
+- Easy to use
+- Country specific phone number validation conventions
+- Mine/extract phone number network operator
+- Built with Typescript
+- Countries currently supported: _Kenya(KE)_
 
 See the [open issues](https://github.com/hane-smitter/mine-phone-number/issues) for a full list of proposed features (and known issues).
 
@@ -147,7 +151,7 @@ See the [open issues](https://github.com/hane-smitter/mine-phone-number/issues) 
 
 <!-- CONTRIBUTING -->
 
-## Contributing
+<h2 id="contributing">🔧 Contributing</h2>
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -164,7 +168,7 @@ Don't forget to give the project a star! Thanks again!
 
 <!-- LICENSE -->
 
-## License
+<h2 id="license">🔓 License</h2>
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
@@ -172,7 +176,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- CONTACT -->
 
-## Contact
+<h2 id="contact">✉️ Contact</h2>
 
 Zacky - [@SmitterHane](https://twitter.com/SmitterHane) - hanesmitter3@gmail.com
 

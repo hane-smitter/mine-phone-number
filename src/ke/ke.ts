@@ -1,4 +1,3 @@
-import { parsePhoneNumberFromString, PhoneNumber } from "libphonenumber-js";
 import {
 	CountryCode,
 	IExtract,
@@ -8,6 +7,7 @@ import {
 	PREFIXES
 } from "../types";
 import sift from "../utils/sifter";
+import { MineNumber } from "./ke.parse";
 
 type MobileNetworkOperators =
 	| "SAFARICOM"
@@ -96,28 +96,18 @@ const MNOPrefixes: IMNOPrefixes = {
 export function getNetworkOperator(
 	num: string
 ): OperatorResponse | MobileNetworkOperators {
-	const parsedNumber: PhoneNumber | undefined = parsePhoneNumberFromString(
-		num,
-		countryCode
-	);
-	const keNumber: string | undefined = parsedNumber?.number;
-	const isValidKENumber: RegExp = /^(\+?254|0)\d{9}$/;
-	if (!isValidKENumber.test(String(keNumber))) {
-		return "INVALID_NUMBER"; //INVALID_NUMBER
-	}
-	let prefix: string | null = null;
+	const number: MineNumber = new MineNumber(num);
+
+	const keNumber: string | undefined = number?.number;
 	if (!keNumber) {
 		return "INVALID_NUMBER_INPUT"; //INVALID_NUMBER_INPUT
 	}
-	const capturePrefix = /(\+?254|0)(?<prefix>\d{3})(\d{6})/;
-	const extracted: RegExpMatchArray | null = keNumber.match(capturePrefix);
-	prefix = extracted && extracted[2];
 
-	let prefixNum: number = 0;
-	if (!prefix) {
-		return "INVALID_NUMBER"; // INVALID_NUMBER
+	if (!number.isValidNumber) {
+		return "INVALID_NUMBER"; //INVALID_NUMBER
 	}
-	prefixNum = parseInt(prefix);
+
+	const prefixNum: number = isNaN(number.getPrefix()) ? 0 : number.getPrefix();
 
 	const prefixNumAvailable: boolean = AVAILABLEPREFIXES.includes(prefixNum);
 	if (!prefixNumAvailable) {
@@ -131,28 +121,22 @@ export function getNetworkOperator(
 			return MNOS[i].name;
 		}
 	}
-	return "UNKNOWN"; //UNKNOWN
+	return "UNKNOWN";
 }
 export function isOperator(
 	num: string,
 	operator: MobileNetworkOperators
 ): boolean {
 	const networkOperator = String(operator.toUpperCase().trim());
-	const parsedNumber: PhoneNumber | undefined = parsePhoneNumberFromString(
-		num,
-		countryCode
-	);
+	
+	const parsedNumber = new MineNumber(num);
 	const keNumber: string | undefined = parsedNumber?.number;
-	let prefix: string | null = null;
-	if (keNumber) {
-		const capturePrefix = /(\+?254|0)(?<prefix>\d{3})(\d{6})/;
-		const extracted: RegExpMatchArray | null = keNumber.match(capturePrefix);
-		prefix = extracted && extracted[2];
+	if (!keNumber) {
+		return false;
 	}
-	let prefixNum: number = 0;
-	if (prefix) {
-		prefixNum = parseInt(prefix);
-	}
+	const prefixNum: number = isNaN(parsedNumber.getPrefix())
+		? 0
+		: parsedNumber.getPrefix();
 
 	// get the mobile network operator
 	const foundOperator: IMNO<MobileNetworkOperators> | undefined = MNOS.find(
@@ -169,13 +153,8 @@ export function isOperator(
 	return false;
 }
 export function isValidNumberForRegion(num: string): boolean {
-	const parsedNumber: PhoneNumber | undefined = parsePhoneNumberFromString(
-		num,
-		countryCode
-	);
-	const keNumber: string | undefined = parsedNumber?.number;
-	const isValidKENumber: RegExp = /^(\+?254|0)\d{9}$/;
-	return isValidKENumber.test(String(keNumber));
+	const parsedNumber: MineNumber = new MineNumber(num);
+	return parsedNumber.isValidNumber();
 }
 // functions END
 

@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "tsc --watch",
     "test": "jest",
-    "build": "tsc -P tsconfig.build.json",
+    "build": "tsc -b --clean && tsc -b tsconfig.build.json",
     "lint": "eslint --ignore-path .eslintignore",
     "format": "prettier --ignore-path .gitignore --write \"src/**/*.ts\" \"src/**/*.js\"",
     "prepublishOnly": "npm run build && npm run test"

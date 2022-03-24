@@ -33,6 +33,7 @@
 
   <p align="center">
     Mine Phone Number is a tool that helps you retrieve information about a phone number (phone number's calling code and mobile network operator). You can also validate a phone number with <strong>rules/conventions</strong> for a specific country, identified by <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">2 Character ISO code</a>.
+    ---<a href="https://www.iban.com/country-codes">Additional reference.</a>---
     <!-- <br />
     <a href="https://github.com/hane-smitter/mine-phone-number"><strong>Explore the docs »</strong></a> -->
     <br />
@@ -119,10 +120,10 @@ const {
 } = require("mine-phone-number/dist/ke");
 // ---- or, alternative way of loading the library ----
 /* 
-const { KE } = require("mine-phone-number");
+const { ke } = require("mine-phone-number");
 
 --- use as ---
-const isAirtelSim = KE.isOperator("0739444444", "AIRTEL KENYA"); // outputs TRUE
+const isAirtelSim = ke.isOperator("0739444444", "AIRTEL KENYA"); // outputs TRUE
  */
 const isAirtelSim = isOperator("0739444444", "AIRTEL KENYA");
 const isValidNum = isValidNumberForRegion("07691111111");

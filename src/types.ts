@@ -1,3 +1,12 @@
+type Tagged<A, T> = A & { __tag?: T };
+
+export type E164Number = Tagged<string, "E164Number">;
+export type NationalNumber = Tagged<string, "NationalNumber">;
+export type Extension = Tagged<string, "Extension">;
+export type CarrierCode = Tagged<string, "CarrierCode">;
+export type CountryCallingCode = Tagged<string, "CountryCallingCode">;
+
+
 export type OperatorResponse =
 	| "INVALID"
 	| "INVALID_NUMBER"
@@ -22,6 +31,13 @@ export interface IExtract<T> {
 	 * @param num - Phone number in national or international format
 	 */
 	 isValidNumberForRegion(num: string): boolean;
+}
+export interface IMineNumber {
+	countryCode: CountryCode;
+	rawInp: string;
+	number: E164Number | undefined;
+	isValidNumber(): boolean;
+	getPrefix(): number;
 }
 export type PREFIXES = number[];
 // export interface ISiftPrefixes {

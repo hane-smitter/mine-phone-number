@@ -1,1 +1,8 @@
-export { getNetworkOperator, isOperator, isValidNumberForRegion } from "./ke";
+export {
+	getNetworkOperator,
+	isOperator,
+	isValidNumberForRegion,
+	isValidFixedNumberForRegion,
+	isValidMobileNumberForRegion,
+    getPhoneNumberType
+} from "./ke";

@@ -13,24 +13,39 @@ export type OperatorResponse =
 	| "INVALID_NUMBER_INPUT"
 	| "NOT_AVAILABLE_IN_REGION"
 	| "UNKNOWN";
+	export type PhoneNumberTypeResponse =
+	| "LAND_LINE_PHONE_NUMBER"
+	| "MOBILE_PHONE_NUMBER"
+	| "UNKNOWN";
 export interface IExtract<T> {
 	/**
 	 * Get name of Mobile Network Operator
-	 * @param {string} num - Phone number in national or international format
+	 * @param {string} num - Phone number in national or `International` format
 	 * @returns {string} - This is the name of the Mobile Network Operator
 	 */
 	getNetworkOperator(num: string): OperatorResponse | T;
+	getPhoneNumberType(num: string): PhoneNumberTypeResponse;
 	/**
 	 * Match a phone number against a Mobile Network Operator specified
-	 * @param num - Phone number in national or international format
+	 * @param num - Phone number in `National` or `International` format
 	 * @param operator - Name of Mobile Network Provider, may also be the ISP
 	 */
 	isOperator(num: string, operator: T): boolean;
 	/**
 	 * Check if phone number is valid in the configured country code
-	 * @param num - Phone number in national or international format
+	 * @param num - Phone number in `National` or `International` format
 	 */
 	 isValidNumberForRegion(num: string): boolean;
+	 /**
+	  * Check if the provided number is a valid Mobile Phone Number
+	  * @param num - Phone number in `National` or `International` format
+	  */
+	 isValidMobileNumberForRegion(num: string): boolean;
+	 /**
+	  * Check if the provided number is a valid Fixed Line Number
+	  * @param num - Phone number in `National` or `International` format
+	  */
+	 isValidFixedNumberForRegion(num: string): boolean;
 }
 export interface IMineNumber {
 	countryCode: CountryCode;

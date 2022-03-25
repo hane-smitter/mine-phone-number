@@ -7,21 +7,6 @@
 *** Thanks again!
 -->
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-<!-- [![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url] -->
-
 <!-- PROJECT LOGO -->
 <!-- <br />
 <div align="center">
@@ -64,6 +49,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#api">API</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -116,27 +102,68 @@ This is an example of how to list things you need to use the software and how to
 const {
 	getNetworkOperator,
 	isOperator,
-	isValidNumberForRegion
+	isValidNumberForRegion,
+	isValidMobileNumberForRegion,
+	isValidFixedNumberForRegion,
+	getPhoneNumberType
 } = require("mine-phone-number/dist/ke");
+
 // ---- or, alternative way of loading the library ----
 /* 
 const { ke } = require("mine-phone-number");
 
 --- use as ---
-const isAirtelSim = ke.isOperator("0739444444", "AIRTEL KENYA"); // outputs TRUE
+const isAirtelSim = ke.isOperator("0739444444", "AIRTEL NETWORKS KENYA LTD"); // outputs TRUE
  */
-const isAirtelSim = isOperator("0739444444", "AIRTEL KENYA");
-const isValidNum = isValidNumberForRegion("07691111111");
+const isAirtelSim = isOperator("0739444444", "AIRTEL NETWORKS KENYA LTD");
 const getOperator = getNetworkOperator("254-747-444444");
 
+// Mobile Number passed as argument
+const isValidNum = isValidNumberForRegion("0711111111");
+
+// FixedLine Number passed as argument
+const isValidNum2 = isValidNumberForRegion("+254 41 123 4567 845");
+
+// Invalid Mobile Number passed as argument
+const isValidNum3 = isValidNumberForRegion("07111111111111");
+
+const isValidMobileNum = isValidMobileNumberForRegion("07111111111111");
+const isValidFixedNum = isValidFixedNumberForRegion("041 123 4567 ");
+const gottenType = getPhoneNumberType("041 123 4567");
+
 console.log("isAirtelSim:: ", isAirtelSim); // outputs TRUE (boolean)
-console.log("retrieved operator:: ", getOperator); // outputs "JAMII TELECOMMUNICATION" (string)
-console.log("isValidNum", isValidNum); // outputs FALSE (boolean)
+console.log("Network Operator: ", getOperator); // outputs "JAMII TELECOMMUNICATION" (string)
+console.log("isValidNum", isValidNum); // outputs TRUE (boolean)
+console.log("isValidNum2", isValidNum2); // outputs TRUE (boolean)
+console.log("isValidNum3", isValidNum3); // outputs FALSE (boolean)
+console.log("isValidMobileNum", isValidMobileNum); // outputs FALSE (boolean)
+console.log("isValidFixedNum", isValidFixedNum); // outputs TRUE (boolean)
+console.log("gottenType", gottenType); // outputs "LAND_LINE_PHONE_NUMBER" (string)
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- ROADMAP -->
+
+<h2 id="api">API</h2>
+
+Parameter Based
+
+- `getNetworkOperator` - Gets the network operator of the phone number. Returns a string, i.e:
+  - Name of Mobile Network Operator or one of the below strings
+  - `INVALID_NUMBER_INPUT` if the provided number is not a valid phone number
+  - `INVALID_NUMBER` if the provided number is not a valid Mobile Phone Number (It could be a landline number)
+  - `NOT_AVAILABLE_IN_REGION` if the provided number prefix is not listed for the region
+  - `UNKNOWN` otherwise.
+- `getPhoneNumberType` - Gets the type of the phone number. The number needs to be valid for the region(should pass test of `isValidNumberForRegion`). Returns a string, i.e:
+  - Type of the phone number, which is either `LAND_LINE_PHONE_NUMBER` or `MOBILE_PHONE_NUMBER`.
+  - `UNKNOWN` otherwise
+- `isOperator` - Tells you if the phone number is by the specified network operator. `isOperator("phone number", "Network operator")`. Returns a boolean value.
+- `isValidNumberForRegion` - Tells you if the phone number is valid. It validates according to rules(numbering plan) by the associated country **ISO Code**. Both landline and mobile numbering plan are tested for validity against the provided phone number. Returns Boolean value.
+- `isValidMobileNumberForRegion` - Tells you if the phone number is valid Mobile Phone Number according to rules/conventions of the associated region(country code). Returns Boolean value.
+- `isValidFixedNumberForRegion` - Tells you if the phone number is valid Land Line Telephone number according to rules/conventions of the associated region(country code). It additionally ensures that the provided areacode is present in the region. Returns Boolean value.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 <h2 id="features">✅ Features</h2>
 

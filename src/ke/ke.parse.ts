@@ -64,25 +64,26 @@ export class MineNumber implements IMineNumber {
 			this.isValidMobileNumber() || this.isValidFixedNumber() || isValidKENumber
 		);
 	}
-	isValidFixedNumber(): boolean {
+	isValidFixedNumber(nonstrict?: "less_strict"): boolean {
 		// Valid ke fixed number is 7 to 9 digits excluding country code
 		const areacCodeExp: RegExp = /^(?<cc>\+?254|0)(?<ac>\d{2})\d{5,7}$/;
 		const AC = this.number?.match(areacCodeExp);
 		const areaCode: number = parseInt(AC?.groups?.ac || "");
 		// Search if such an area code exists in ke
-		const foundArea: object | undefined = areaCodes.find(
-			area => area.code === areaCode
-		);
-		// console.log(this.number);
-		// console.log("AC EXP", AC);
-		// console.log("Extracted code", areaCode);
-		// console.log("Found Area", foundArea);
-		if (!foundArea) return false;
+		if (nonstrict !== "less_strict") {
+			const foundArea: object | undefined = areaCodes.find(
+				area => area.code === areaCode
+			);
+			if (!foundArea) return false;
+		}
 		return areacCodeExp.test(this.number || "");
 	}
-	isValidMobileNumber(): boolean {
+	isValidMobileNumber(nonstrict?: "less_strict"): boolean {
 		// valid ke mobile number is 9 digits excluding country code
 		const isValidKEMobileNumber: RegExp = /^(\+?254|0)([71]\d{8})$/;
+		const isValidKEMobileNumberNonStrict: RegExp = /^(\+?254|0)(\d{9})$/;
+		if (nonstrict === "less_strict")
+			return isValidKEMobileNumberNonStrict.test(String(this?.number));
 		return isValidKEMobileNumber.test(String(this?.number));
 	}
 
@@ -97,9 +98,9 @@ export class MineNumber implements IMineNumber {
 		return parseInt(prefix);
 	}
 
-	getType(): PhoneNumberTypeResponse {
-		if (this.isValidFixedNumber()) return "LAND_LINE_PHONE_NUMBER";
-		if (this.isValidMobileNumber()) return "MOBILE_PHONE_NUMBER";
+	getType(strict?: "less_strict"): PhoneNumberTypeResponse {
+		if (this.isValidFixedNumber(strict)) return "LAND_LINE_PHONE_NUMBER";
+		if (this.isValidMobileNumber(strict)) return "MOBILE_PHONE_NUMBER";
 		return "UNKNOWN";
 	}
 }

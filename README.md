@@ -100,12 +100,12 @@ This is an example of how to list things you need to use the software and how to
 
 ```javascript
 const {
-	getNetworkOperator,
-	isOperator,
-	isValidNumberForRegion,
-	isValidMobileNumberForRegion,
-	isValidFixedNumberForRegion,
-	getPhoneNumberType
+  getNetworkOperator,
+  isOperator,
+  isValidNumberForRegion,
+  isValidMobileNumberForRegion,
+  isValidFixedNumberForRegion,
+  getPhoneNumberType,
 } = require("mine-phone-number/dist/ke");
 
 // ---- or, alternative way of loading the library ----
@@ -118,27 +118,37 @@ const isAirtelSim = ke.isOperator("0739444444", "AIRTEL NETWORKS KENYA LTD"); //
 const isAirtelSim = isOperator("0739444444", "AIRTEL NETWORKS KENYA LTD");
 const getOperator = getNetworkOperator("254-747-444444");
 
-// Mobile Number passed as argument
+// Valid Mobile Number passed as argument
 const isValidNum = isValidNumberForRegion("0711111111");
 
-// FixedLine Number passed as argument
-const isValidNum2 = isValidNumberForRegion("+254 41 123 4567 845");
+// Valid FixedLine Number passed as argument
+const isValidNum2 = isValidNumberForRegion("+254207641397");
 
 // Invalid Mobile Number passed as argument
 const isValidNum3 = isValidNumberForRegion("07111111111111");
 
-const isValidMobileNum = isValidMobileNumberForRegion("07111111111111");
-const isValidFixedNum = isValidFixedNumberForRegion("041 123 4567 ");
-const gottenType = getPhoneNumberType("041 123 4567");
+// Invalid landline Number passed as argument
+const isValidNum4 = isValidNumberForRegion("+254 41 123 4");
+
+const isValidMobileNum = isValidMobileNumberForRegion("+2547492076431");
+const isValidFixedNum = isValidFixedNumberForRegion("+2542076416");
+const gottenType = getPhoneNumberType("+254201 123 456");
+// passed landline number and less strict parameter so as not to validate area code
+const gottenTypeLessStrict = getPhoneNumberType(
+  "+254911 123 456",
+  "less_strict"
+);
 
 console.log("isAirtelSim:: ", isAirtelSim); // outputs TRUE (boolean)
 console.log("Network Operator: ", getOperator); // outputs "JAMII TELECOMMUNICATION" (string)
-console.log("isValidNum", isValidNum); // outputs TRUE (boolean)
-console.log("isValidNum2", isValidNum2); // outputs TRUE (boolean)
-console.log("isValidNum3", isValidNum3); // outputs FALSE (boolean)
+console.log("isValidNum (mobile)", isValidNum); // outputs TRUE (boolean)
+console.log("isValidNum2 (landline)", isValidNum2); // outputs TRUE (boolean)
+console.log("isValidNum3 (invalid mobile)", isValidNum3); // outputs FALSE (boolean)
+console.log("isValidNum4 (invalid landline)", isValidNum4); // outputs FALSE (boolean)
 console.log("isValidMobileNum", isValidMobileNum); // outputs FALSE (boolean)
 console.log("isValidFixedNum", isValidFixedNum); // outputs TRUE (boolean)
-console.log("gottenType", gottenType); // outputs "LAND_LINE_PHONE_NUMBER" (string)
+console.log("gottenType", gottenType); // outputs "LAND_LINE_PHONE_NUMBER" (boolean)
+console.log("gottenType Less Strict", gottenTypeLessStrict); // outputs "LAND_LINE_PHONE_NUMBER" (boolean)
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -149,13 +159,22 @@ console.log("gottenType", gottenType); // outputs "LAND_LINE_PHONE_NUMBER" (stri
 
 Parameter Based
 
-- `getNetworkOperator` - Gets the network operator of the phone number. Returns a string, i.e:
+- `getNetworkOperator` - Gets the network operator of the **mobile phone number**. Returns a string, i.e:
   - Name of Mobile Network Operator or one of the below strings
   - `INVALID_NUMBER_INPUT` if the provided number is not a valid phone number
-  - `INVALID_NUMBER` if the provided number is not a valid Mobile Phone Number (It could be a landline number)
+  - `INVALID_NUMBER` if the provided number is not a **valid mobile phone number** (It could be a landline number)
   - `NOT_AVAILABLE_IN_REGION` if the provided number prefix is not listed for the region
   - `UNKNOWN` otherwise.
-- `getPhoneNumberType` - Gets the type of the phone number. The number needs to be valid for the region(should pass test of `isValidNumberForRegion`). Returns a string, i.e:
+  **Note** `getNetworkOperator` API successfully processes specifically a mobile phone number as parameter and not just any phone number such as landline phone number.
+- `getPhoneNumberType` - Gets the type of the phone number. The number needs to be valid for the region(should pass test of `isValidNumberForRegion`).
+  
+  If you may not want this behaviour, you can pass in a string parameter (`less_strict`).
+  This will have the following effect:
+
+  Mobile phone number will only be verified according to the length requirements of the region, and
+  areacode in landline number will not be counter checked to ensure that it exists in the region.
+
+  Returns a string, i.e:
   - Type of the phone number, which is either `LAND_LINE_PHONE_NUMBER` or `MOBILE_PHONE_NUMBER`.
   - `UNKNOWN` otherwise
 - `isOperator` - Tells you if the phone number is by the specified network operator. `isOperator("phone number", "Network operator")`. Returns a boolean value.

@@ -109,7 +109,7 @@ const MNOPrefixes: IMNOPrefixes = {
 	// /**
 	//  * Sema mobile
 	//  */
-	// [MNOS[7].name]: sift({ include: [767] }),
+	// [MNOS[?].name]: sift({ include: [767] }),
 	/**
 	 * Finserve Africa Ltd(Equitel)
 	 */
@@ -135,7 +135,7 @@ export function getNetworkOperator(
 		return "INVALID_NUMBER_INPUT"; //INVALID_NUMBER_INPUT
 	}
 
-	if (!number.isValidMobileNumber) {
+	if (!number.isValidMobileNumber()) {
 		return "INVALID_NUMBER"; //INVALID_NUMBER
 	}
 
@@ -155,9 +155,9 @@ export function getNetworkOperator(
 	}
 	return "UNKNOWN";
 }
-export function getPhoneNumberType(num: string): PhoneNumberTypeResponse {
+export function getPhoneNumberType(num: string, nonstrict?: "less_strict"): PhoneNumberTypeResponse {
 	const parsedNumber: MineNumber = new MineNumber(num);
-	return parsedNumber.getType();
+	return parsedNumber.getType(nonstrict);
 }
 export function isOperator(
 	num: string,
